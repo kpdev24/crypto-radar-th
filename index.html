@@ -336,6 +336,59 @@ footer{text-align:center;color:var(--dim);font-size:12px;padding:14px 10px 18px;
   .bd{grid-template-columns:104px 1fr 30px}
 }
 @media (max-width:380px){.tabs button{font-size:9.5px}.pick{flex-basis:88%}}
+
+/* ================= MOBILE UI v6 ================= */
+.mob-block{display:none!important}
+.spk-n{font-size:11px;padding:0 5px;border-radius:5px;background:rgba(43,196,160,.15)}
+@media (max-width:860px){
+  .mob-block{display:flex!important}
+  .banner{font-size:11.5px;line-height:1.45;align-items:flex-start}.banner>span{flex:1}.banner .btn{margin-left:0}
+  /* ชิปเหรียญด่วน */
+  .qchips{gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -10px 10px;padding:0 10px;scroll-snap-type:x proximity}
+  .qchips::-webkit-scrollbar{display:none}
+  .qc{flex:0 0 auto;scroll-snap-align:start;min-width:112px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 11px;text-align:left}
+  .qc.on{border-color:var(--gold);background:#1d1a10}
+  .qc b{display:block;font-size:13px}.qc .p{font-family:var(--mono);font-size:12.5px;color:var(--text)}.qc .c{font-family:var(--mono);font-size:11.5px}
+  .qc .z{float:right;font-size:11px}
+  /* แถบเครื่องมือกราฟ: ซ่อนตัวเลือกไว้ใต้ ⚙ */
+  .center .toolbar{flex-wrap:wrap}
+  .center #layoutSeg,.center .toolbar .chk{display:none}
+  .center.opts #layoutSeg,.center.opts .toolbar .chk{display:inline-flex}
+  #syncTf{order:5;flex:1 1 100%}
+  #syncTf .lbl{display:none}#syncTf button{flex:1}
+  .pane{height:min(58vh,420px);border-radius:14px}
+  .ph .sym-in{display:none}
+  .pane.act{box-shadow:none;border-color:var(--line)}
+  /* แผงวิเคราะห์แบบพับได้ */
+  .side{padding:14px}
+  .side .sec{padding:0;margin-top:0;border-top:1px solid var(--line)}
+  .side .sec>h4{margin:0;padding:13px 0;cursor:pointer;user-select:none}
+  .side .sec>h4::after{content:'▾';color:var(--dim);margin-left:8px;transition:transform .2s}
+  .side .sec.cl>h4::after{transform:rotate(-90deg)}
+  .side .sec>:not(h4){margin-bottom:12px}
+  .side .sec.cl>:not(h4){display:none}
+  /* ตารางตลาด → การ์ด */
+  #page-market .tablewrap{background:none;border:0;overflow:visible}
+  #mkTable thead{display:none}
+  #mkTable,#mkTable tbody{display:block}
+  #mkTable tr{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:6px 10px;align-items:center;padding:11px 13px;margin-bottom:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+  #mkTable td{padding:0;border:0;text-align:left;white-space:nowrap;position:static!important;background:none!important;font-size:12.5px}
+  #mkTable td:nth-child(1){grid-column:1/3}
+  #mkTable td:nth-child(2){grid-column:3;text-align:right;font-size:14px;font-weight:600}
+  #mkTable td:nth-child(3){grid-column:3;grid-row:2;text-align:right}
+  #mkTable td:nth-child(4){grid-column:1;grid-row:2;color:var(--muted)}
+  #mkTable td:nth-child(4)::before{content:'Vol ';color:var(--dim)}
+  #mkTable td:nth-child(7){grid-column:2;grid-row:2}
+  #mkTable td:nth-child(9){grid-column:1;grid-row:3}
+  #mkTable td:nth-child(9)::before{content:'ข่าว ';color:var(--dim)}
+  #mkTable td:nth-child(10){grid-column:2/4;grid-row:3;text-align:right}
+  #mkTable td:nth-child(10)::before{content:'คะแนนรวม ';color:var(--dim)}
+  #mkTable td:nth-child(5),#mkTable td:nth-child(6),#mkTable td:nth-child(8),#mkTable td:nth-child(11),#mkTable td:nth-child(12){display:none}
+  #mkTable tr td[colspan]{grid-column:1/-1;text-align:center}
+  #page-market>.toolbar{gap:6px}
+  #scanTf,#scanN{flex:1}#btnScan{flex:1 1 100%}
+  #page-market>.toolbar .sp{display:none}
+}
 </style>
 </head>
 <body>
@@ -372,13 +425,14 @@ footer{text-align:center;color:var(--dim);font-size:12px;padding:14px 10px 18px;
 
       <div class="center">
         <div class="toolbar">
-          <button class="btn primary mob-only" id="btnPick">🪙 เลือกเหรียญ</button><div class="seg" id="layoutSeg"><span class="lbl">จอ</span><button data-n="1">1</button><button data-n="2">2</button><button data-n="4">4</button></div>
+          <button class="btn primary mob-only" id="btnPick">🔍 ทุกเหรียญ</button><button class="btn mob-only" id="btnView">⚙ มุมมอง</button><div class="seg" id="layoutSeg"><span class="lbl">จอ</span><button data-n="1">1</button><button data-n="2">2</button><button data-n="4">4</button></div>
           <div class="seg" id="syncTf"><span class="lbl">ทุกจอ</span></div>
           <label class="chk"><input type="checkbox" id="optSR" checked> แนวรับ-ต้าน</label>
           <label class="chk"><input type="checkbox" id="optEMA" checked> EMA</label>
           <span class="sp"></span>
           <span class="dim desk-only" style="font-size:12px">คลิกจอเพื่อเลือก · คลิกเหรียญซ้ายมือเพื่อเปลี่ยน · ล้อเมาส์ = ซูม</span>
         </div>
+        <div class="qchips mob-block" id="qchips"></div>
         <div class="grid g4" id="grid"></div>
       </div>
 
@@ -390,7 +444,7 @@ footer{text-align:center;color:var(--dim);font-size:12px;padding:14px 10px 18px;
   <section class="page" id="page-market">
     <div class="toolbar">
       <input class="inp" id="mkSearch" placeholder="🔍 ค้นหาเหรียญ" style="width:190px">
-      <div class="seg" id="mkQuote"></div>
+      <div class="seg" id="mkQuote"></div><select class="inp mob-only" id="mkSortM" style="width:auto"><option value="qv">เรียง: Vol สูงสุด</option><option value="cs">เรียง: คะแนนรวม</option><option value="ch">เรียง: % 24 ชม.</option><option value="ns">เรียง: ข่าวบวก</option></select>
       <div class="chips" id="mkChips"></div>
       <span class="sp"></span>
       <select class="inp" id="scanTf" style="width:auto"><option value="15m">15m</option><option value="1h">1h</option><option value="4h" selected>4h</option><option value="1d">1d</option></select>
@@ -730,7 +784,7 @@ function testNews() {
 <script>
 'use strict';
 /* =====================================================================
-   Crypto Radar TH v5 — ไฟล์เดียว ไม่พึ่ง CDN (กราฟ + ข่าว + Backtest)
+   Crypto Radar TH v6 — ไฟล์เดียว ไม่พึ่ง CDN (กราฟ + ข่าว + Backtest)
    ข้อมูล: Binance TH REST (api.binance.th) + WebSocket (nbstream.binance.th)
    สำรอง: GAS proxy → Binance Global → โหมดสาธิต
    ===================================================================== */
@@ -787,7 +841,7 @@ function tLabel(t,tf){const d=new Date(t),hh=String(d.getHours()).padStart(2,'0'
 function tFull(t){const d=new Date(t);return `${d.getDate()} ${TMON[d.getMonth()]} ${String(d.getFullYear()+543).slice(2)} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
 
 /* ---------------- toast / sound / notify ---------------- */
-function toast(title,body='',type=''){const el=document.createElement('div');el.className='toast '+type;el.innerHTML=`<b>${esc(title)}</b>${esc(body)}`;$('#toasts').appendChild(el);setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),450)},5500)}
+function toast(title,body='',type='',key){if(key)$$('#toasts .toast').forEach(t=>{if(t.dataset.k===key)t.remove()});const el=document.createElement('div');if(key)el.dataset.k=key;el.className='toast '+type;el.innerHTML=`<b>${esc(title)}</b>${esc(body)}`;$('#toasts').appendChild(el);setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),450)},5500)}
 let AC=null;
 function beep(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const t0=AC.currentTime;[880,1175,880,1320].forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t0+i*.18);g.gain.exponentialRampToValueAtTime(.22,t0+i*.18+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+i*.18+.16);o.connect(g).connect(AC.destination);o.start(t0+i*.18);o.stop(t0+i*.18+.17)})}catch(e){log('warn','เล่นเสียงไม่ได้: '+e.message)}}
 let blinkT=null;const baseTitle=document.title;
@@ -1353,17 +1407,18 @@ function detectSpikes(){if(!S.spk.on||S.mode==='demo'&&false)return;const now=Da
     if(!dir)continue;const k=sym+dir;if(now-(S.spkCool.get(k)||0)<10*60e3)continue;S.spkCool.set(k,now);
     found.push({sym,b:t.b,q:t.q,dir,why,c1,c5,p:t.p,ch:t.ch,t:now})}
   if(!found.length)return;found.sort((a,b)=>Math.abs(b.c1??b.c5)-Math.abs(a.c1??a.c5));
-  S.spikes=[...found,...S.spikes].slice(0,40);S.spkUnread+=found.length;
+  for(const f of found){const pv=S.spikes.find(x=>x.sym===f.sym);f.n=(pv?.n||0)+1;f.first=pv?.first||f.t}S.spikes=[...found,...S.spikes.filter(x=>!found.some(f=>f.sym===x.sym))].slice(0,40);S.spkUnread+=found.length;
   const top=found.slice(0,3);
+  for(const f of found)if(f.n>1)f.why+=` (ครั้งที่ ${f.n})`;
   const title=top.length===1?`${top[0].dir==='u'?'🚀 ดีดแรง':'📉 ร่วงแรง'}: ${top[0].b}/${top[0].q}`:`⚡ ${found.length} เหรียญเคลื่อนไหวแรง`;
   const body=top.map(x=>`${x.dir==='u'?'▲':'▼'} ${x.b} ${fp(x.p)} (${x.why})`).join('\n');
-  const sent=browserNotify(title,body);beep();toast(title,body.replace(/\n/g,' · '),found[0].dir==='u'?'ok':'err');blinkTitle(found.map(x=>x.b).slice(0,3).join(', ')+' ดีด');
+  const sent=browserNotify(title,body);beep();toast(title,body.replace(/\n/g,' · '),found[0].dir==='u'?'ok':'err','spk:'+title);blinkTitle(found.map(x=>x.b).slice(0,3).join(', ')+' ดีด');
   S.panes.filter(p=>found.some(x=>x.sym===p.sym)).forEach(p=>p.flash());
   log('ok',`⚡ ตรวจพบ: ${found.map(x=>x.b+' '+x.why).join(' | ')}${sent?' ✔ Notification':''}`);renderSpikes();markSpikeRows()}
 function renderSpikes(){$('#spkBadge').textContent=S.spkUnread?'⚡'+S.spkUnread:'';if(S.page!=='market')return;
   const box=$('#spkList');const w=S.ph.size?Math.round((Date.now()-Math.min(...[...S.ph.values()].slice(0,50).map(h=>h[0]?.[0]||Date.now())))/1000):0;
   $('#spkInfo').textContent=S.spk.on?`เกณฑ์ +${S.spk.p1}%/1 นาที หรือ +${S.spk.p5}%/5 นาที · เก็บข้อมูลแล้ว ${Math.min(w,390)} วิ`:'ปิดอยู่';
-  box.innerHTML=S.spikes.length?S.spikes.map(x=>`<div class="spk-i ${x.dir}" data-s="${x.sym}"><div style="display:flex;justify-content:space-between"><b class="mono">${esc(x.b)}<span class="q">/${x.q}</span></b><span class="${x.dir==='u'?'up':'down'}">${x.dir==='u'?'🚀 ดีด':'📉 ร่วง'}</span></div>
+  box.innerHTML=S.spikes.length?S.spikes.map(x=>`<div class="spk-i ${x.dir}" data-s="${x.sym}"><div style="display:flex;justify-content:space-between"><b class="mono">${esc(x.b)}<span class="q">/${x.q}</span></b><span class="${x.dir==='u'?'up':'down'}">${x.dir==='u'?'🚀 ดีด':'📉 ร่วง'}${x.n>1?` <b class="spk-n">×${x.n}</b>`:''}</span></div>
     <div class="r"><span class="mono" style="color:var(--text)">${fp(x.p)}</span><span class="${x.dir==='u'?'up':'down'}">${esc(x.why)}</span></div><div class="r"><span>${ago(x.t)} · Vol ${volTxt(S.tickers.get(x.sym))}</span><span class="mono ${cls(x.ch||0)}">24ชม. ${fpc(x.ch)}</span></div></div>`).join('')
     :`<p class="muted" style="margin:0;font-size:13px">ยังไม่มีเหรียญที่เข้าเกณฑ์ — ระบบต้องเก็บราคาอย่างน้อย 1 นาทีหลังเปิดหน้าเว็บ แล้วจะแจ้งเตือนทันทีที่พบ (เปิดหน้านี้ค้างไว้)</p>`}
 function markSpikeRows(){const now=Date.now();for(const[sym,ref]of S.wl.refs){const hit=S.spikes.find(x=>x.sym===sym&&now-x.t<15*60e3);const n=$('.wl-n',ref.r);let z=n.querySelector('.zz');
@@ -1372,6 +1427,16 @@ function wireSpikes(){const K=S.spk;$('#spkOn').checked=K.on;$('#spk1').value=K.
   const save=()=>{K.on=$('#spkOn').checked;K.p1=Math.max(0.2,+$('#spk1').value||1.5);K.p5=Math.max(0.5,+$('#spk5').value||3);K.vol=Math.max(0,+$('#spkVol').value||0);K.dir=$('#spkDir').value;LS.set('spk',K);renderSpikes()};
   ['spkOn','spk1','spk5','spkVol','spkDir'].forEach(id=>$('#'+id).addEventListener('change',save));
   $('#spkList').addEventListener('click',e=>{const c=e.target.closest('[data-s]');if(c)openSym(c.dataset.s)})}
+
+/* ---------- มือถือ: ชิปเหรียญด่วน + ส่วนพับได้ ---------- */
+const isMob=()=>matchMedia('(max-width:860px)').matches;
+S.secOpen=new Set(LS.get('secOpen',[0,1,2]));
+function renderQChips(){if(!isMob()||S.page!=='charts')return;const box=$('#qchips');const cur=S.panes[S.active]?.sym,q=splitSym(cur||'')[1]||defaultQuote();
+  const syms=[...new Set([cur,...S.panes.map(p=>p.sym),...S.spikes.slice(0,3).map(x=>x.sym),...S.list.filter(t=>t.q===q).slice(0,14).map(t=>t.s)])].filter(s=>s&&S.tickers.has(s));
+  const key=syms.join(',')+cur;if(box.dataset.k!==key){box.dataset.k=key;box.innerHTML=syms.map(s=>{const t=S.tickers.get(s),z=S.spikes.find(x=>x.sym===s&&Date.now()-x.t<15*60e3);
+    return`<button class="qc ${s===cur?'on':''}" data-s="${s}">${z?`<span class="z ${z.dir==='u'?'up':'down'}">⚡</span>`:''}<b>${esc(t.b)}<span class="q">/${t.q}</span></b><span class="p">${fp(t.p)}</span><br><span class="c ${cls(t.ch||0)}">${fpc(t.ch)}</span></button>`}).join('');return}
+  $$('.qc',box).forEach(el=>{const t=S.tickers.get(el.dataset.s);if(!t)return;$('.p',el).textContent=fp(t.p);const c=$('.c',el);c.textContent=fpc(t.ch);c.className='c '+cls(t.ch||0)})}
+function applySecState(){if(!isMob())return;$$('#side .sec').forEach((sec,i)=>{sec.dataset.i=i;sec.classList.toggle('cl',!S.secOpen.has(i))})}
 /* =====================================================================
    PANES
    ===================================================================== */
@@ -1538,6 +1603,7 @@ function renderSide(soft){
     <div class="sec"><h4>หลายไทม์เฟรม <button class="btn sm" id="btnMTF">คำนวณ</button></h4><div id="mtfBox" class="note">เทียบแนวโน้ม 15m · 1h · 4h · 1d ของเหรียญนี้</div></div>
     <p class="note">ผลวิเคราะห์จากอินดิเคเตอร์และข่าวแบบอัตโนมัติ ใช้ประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน</p>`;
   if(S.mtf&&S.mtf.sym===p.sym)$('#mtfBox').innerHTML=S.mtf.html;
+  applySecState();
 }
 function updateSideLive(){const p=S.panes[S.active];if(!p)return;const t=S.tickers.get(p.sym),el=$('#sidePx');if(t&&el)el.innerHTML=`${fp(t.p)} <small class="${cls(t.ch||0)}" style="font-size:14px">${isFinite(t.ch)?fpc(t.ch):''}</small>`}
 async function runMTF(){const p=S.panes[S.active];if(!p)return;const sym=p.sym;$('#mtfBox').innerHTML='กำลังคำนวณ…';
@@ -1720,7 +1786,7 @@ async function poll(){
 }
 function uiTick(){
   if(S.listDirty){refreshList();renderQuoteSegs();renderWatch(true)}else renderWatch(false);
-  samplePrices();if((uiTick.n=(uiTick.n||0)+1)%5===0){detectSpikes();if(S.page==='market')renderSpikes();markSpikeRows()}
+  samplePrices();renderQChips();if((uiTick.n=(uiTick.n||0)+1)%5===0){detectSpikes();if(S.page==='market')renderSpikes();markSpikeRows()}
   S.panes.forEach(p=>{p.head();if(p.kl&&Date.now()-(p.ctxAt||0)>5*60e3)p.loadCtx()});
   if(S.page==='charts')updateSideLive();
   if(S.page==='market'&&Date.now()-S.mk.t>3000&&!document.activeElement?.closest?.('#page-market input'))renderMarket();
@@ -1776,7 +1842,11 @@ function wire(){
   // debug
   $('#btnTest').addEventListener('click',testConn);$('#btnSelf').addEventListener('click',()=>selfTest());
   wireNews();wireSpikes();
-  const isMob=()=>matchMedia('(max-width:860px)').matches,wl=$('.wl');
+  const wl=$('.wl');
+  $('#btnView').addEventListener('click',()=>$('.center').classList.toggle('opts'));
+  $('#qchips').addEventListener('click',e=>{const c=e.target.closest('[data-s]');if(!c)return;const p=S.panes[S.active];if(p&&p.sym!==c.dataset.s)p.setSym(c.dataset.s);renderQChips()});
+  $('#side').addEventListener('click',e=>{if(!isMob())return;const h=e.target.closest('.sec>h4');if(!h||e.target.closest('button'))return;const sec=h.parentElement,i=+sec.dataset.i;if(S.secOpen.has(i))S.secOpen.delete(i);else S.secOpen.add(i);LS.set('secOpen',[...S.secOpen]);sec.classList.toggle('cl')});
+  $('#mkSortM').addEventListener('change',e=>{const k=e.target.value;S.mk.sort={k,d:-1};renderMarket()});
   $('#btnPick').addEventListener('click',()=>{wl.classList.add('open');setTimeout(()=>$('#wlSearch').focus(),250)});
   $('#btnWlClose').addEventListener('click',()=>wl.classList.remove('open'));
   $('#wlList').addEventListener('click',()=>{if(isMob()){wl.classList.remove('open');setTimeout(()=>S.panes[S.active]?.el.scrollIntoView({behavior:'smooth',block:'start'}),150)}});
